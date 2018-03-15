@@ -44,4 +44,8 @@ public class CriteriosAplicables {
 	public void setVerificado(boolean verificado) {
 		this.verificado = verificado;
 	}
+	
+	public void setnComunes(int nComunes) {
+        this.nComunes = nComunes;
+    }
 }
