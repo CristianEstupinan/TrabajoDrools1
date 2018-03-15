@@ -2,6 +2,7 @@ package model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Collection;
 
 public class Aficiones {
 
@@ -13,6 +14,10 @@ public class Aficiones {
 
     public Aficiones(){
         intereses = new HashSet<>();
+    }
+    
+    public Aficiones(Collection<Interes> col) {
+    	this.intereses = new HashSet<Interes>(col);
     }
 
     public Set<Interes> getIntereses() {
