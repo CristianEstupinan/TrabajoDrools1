@@ -1,0 +1,43 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+import function herramientas.Registro.pantalla;
+import criterios.*;
+import criterios.CriteriosAplicables.Capacidad;
+
+
+rule "Regla de match completa"
+  ruleflow-group "match"
+  lock-on-active true
+  when
+    CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Pago) && 
+    	(getEstado() == CriteriosAplicables.NOAPLICABLE || isVerificado()));
+    CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Idioma) && 
+    	(getEstado() == CriteriosAplicables.NOAPLICABLE || isVerificado()));
+    CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Deportiva) && 
+    	(getEstado() == CriteriosAplicables.NOAPLICABLE || isVerificado()));
+    CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Intereses) && 
+    	getnComunes() > 2);
+  	$decision: DecisionRealizarActividad(!isEstado());
+  then
+    modify($decision){
+    	setEstado(true);
+    }
+    pantalla( "Match: "+ $decision.isEstado() );
+end
+
+rule "Regla de match relajada"
+  ruleflow-group "match"
+  lock-on-active true
+  when
+    CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Pago) && 
+    	(getEstado() == CriteriosAplicables.NOAPLICABLE || isVerificado()));
+    CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Intereses) && 
+    	getnComunes() >= 5);
+  	$decision: DecisionRealizarActividad(!isEstado());
+  then
+    modify($decision){
+    	setEstado(true);
+    }
+    pantalla( "Match: "+ $decision.isEstado() );
+end
