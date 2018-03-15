@@ -1,5 +1,6 @@
 package model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class InfoPersonal {
@@ -69,4 +70,6 @@ public class InfoPersonal {
                 ", costeMax=" + costeMax +
                 '}';
     }
+    
+    
 }
