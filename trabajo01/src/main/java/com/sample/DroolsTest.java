@@ -26,10 +26,10 @@ public class DroolsTest {
         					35,
         					null,
         					EstadoCivil.Soltero,
+        					0,
         					Estudios.Basico,
         					false,
-        					50,
-        					false),
+        					50),
         			new Aficiones(),
         			new InfoAbstractaCliente()
         			);
