@@ -10,19 +10,19 @@ public class CriteriosAplicables {
         Deportiva, Idioma, Pago, Intereses
     }
 
-    private int estado;
+    private int activo;
     private boolean verificado;
-    private Capacidad tipoCriterio;
+    private final Capacidad tipoCriterio;
     private int nComunes = -1; // solo para tipo Intereses
 
     public CriteriosAplicables(Capacidad tipoCriterio) {
-        this.estado = NOACTIVO;
+        this.activo = NOACTIVO;
         this.verificado = false;
         this.tipoCriterio = tipoCriterio;
     }
 
-    public int getEstado() {
-        return estado;
+    public int getActivo() {
+        return activo;
     }
 
     public boolean isVerificado() {
@@ -36,4 +36,12 @@ public class CriteriosAplicables {
     public int getnComunes() {
         return nComunes;
     }
+
+	public void setActivo(int activo) {
+		this.activo = activo;
+	}
+
+	public void setVerificado(boolean verificado) {
+		this.verificado = verificado;
+	}
 }

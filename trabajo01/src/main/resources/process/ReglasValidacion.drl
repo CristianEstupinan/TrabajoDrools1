@@ -1,0 +1,40 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+import function herramientas.Registro.pantalla;
+import model.*;
+import model.InfoAbstractaCliente.RangoEdad;
+import model.InfoAbstractaCliente.Riesgo;
+import criterios.*;
+import criterios.CriteriosAplicables;
+import criterios.CriteriosAplicables.Capacidad;
+
+// Regla de validacion de capacidad de pago del cliente para realizar la actividad
+rule "Regla criterio 1"
+  ruleflow-group "verifica"
+  lock-on-active true
+  when
+  	$cliente: Cliente($costeMax: getInfoPersonal().getCosteMax());
+  	$actividad: Actividad($costeMax >= getCoste());
+  	$capacidadPago: CriteriosAplicables(getTipoCriterio() == Capacidad.Pago)
+  then
+    modify($capacidadPago){
+    	setVerificado(true);
+    }
+    pantalla( "Validacion: "+ $capacidadPago.isVerificado());
+end
+
+// Regla de validacion de capacidad de pago del cliente para realizar la actividad
+rule "Regla criterio 2"
+  ruleflow-group "verifica"
+  lock-on-active true
+  when
+  	$cliente: Cliente($costeMax: getInfoPersonal().getCosteMax());
+  	$actividad: Actividad($costeMax >= getCoste());
+  	$capacidadPago: CriteriosAplicables(getTipoCriterio() == Capacidad.Pago)
+  then
+    modify($capacidadPago){
+    	setVerificado(true);
+    }
+    pantalla( "Validacion: "+ $capacidadPago.isVerificado());
+end
