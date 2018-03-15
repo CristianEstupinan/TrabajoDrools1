@@ -5,6 +5,7 @@ import function herramientas.Registro.pantalla;
 import model.*;
 import model.InfoAbstractaCliente.RangoEdad;
 import model.InfoAbstractaCliente.Riesgo;
+import model.InfoPersonal.Estudios;
 
 
 // Reglas de abstracción para le rango de edad
@@ -38,15 +39,24 @@ rule "Abstrae edad mayor"
   when
   	$cliente: Cliente( getInfoPersonal().getEdad() > 67 )
   then
-    modify($cliente){
-    	getInfoAbstracta().setRangoEdad(RangoEdad.Mayor);
-    }
-    pantalla( "Abstraccion: "+ $cliente.getInfoAbstracta().getRangoEdad() );
+    modify($cliente.getInfoAbstracta()){setRangoEdad(RangoEdad.Mayor);}
+    modify($cliente.getInfoAbstracta()){setCapacidadDeportiva(false);}
+    pantalla( "Abstraccion: "+ $cliente.getInfoAbstracta().getRangoEdad() +
+    	"\n Capaccidad Deportiva: " + $cliente.getInfoAbstracta().isCapacidadDeportiva());
 end
 
-
 // Reglas asbtraccion capacidad deportiva
-
+rule "Capacidad Deportiva discapacidtados"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().isDiscapacidad() )
+  then
+    modify($cliente){
+    	getInfoAbstracta().setCapacidadDeportiva(false);
+    }
+    pantalla( "Abstraccion: Capacidad deportiva "+ $cliente.getInfoAbstracta().isCapacidadDeportiva() );
+end
 
 // Reglas abstracción riesgo familias
 rule "familias sin hijos"
@@ -58,9 +68,90 @@ rule "familias sin hijos"
     modify($cliente){
     	getInfoAbstracta().setRiesgo(Riesgo.Bajo);
     }
-    pantalla( "Abstraccion: "+ $cliente.getInfoAbstracta().getRiesgo() );
+    pantalla( "Abstraccion: Riesgo"+ $cliente.getInfoAbstracta().getRiesgo() );
 end
 
+rule "familias 1 hijo"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getNHijos() == 1 )
+  then
+    modify($cliente){
+    	getInfoAbstracta().setRiesgo(Riesgo.Medio);
+    }
+    pantalla( "Abstraccion: Riesgo"+ $cliente.getInfoAbstracta().getRiesgo() );
+end
 
+rule "familias +1 hijos"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getNHijos() > 1 )
+  then
+    modify($cliente){
+    	getInfoAbstracta().setRiesgo(Riesgo.Alto);
+    }
+    pantalla( "Abstraccion: Riesgo "+ $cliente.getInfoAbstracta().getRiesgo() );
+end
 
+// Reglas abstracción nivel educativo
+rule "Educación ninguna"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getEstudios() == Estudios.Ninguno)
+  then
+    modify($cliente){
+    	getInfoAbstracta().setNivelEducativo(1);
+    }
+    pantalla( "Abstraccion: Nivel educativo "+ $cliente.getInfoAbstracta().getNivelEducativo() );
+end
 
+rule "Educación básica"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getEstudios() == Estudios.Basico)
+  then
+    modify($cliente){
+    	getInfoAbstracta().setNivelEducativo(2);
+    }
+    pantalla( "Abstraccion: Nivel educativo "+ $cliente.getInfoAbstracta().getNivelEducativo() );
+end
+
+rule "Educación grado medio"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getEstudios() == Estudios.GradoMedio)
+  then
+    modify($cliente){
+    	getInfoAbstracta().setNivelEducativo(3);
+    }
+    pantalla( "Abstraccion: Nivel educativo "+ $cliente.getInfoAbstracta().getNivelEducativo() );
+end
+
+rule "Educación grado superior"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getEstudios() == Estudios.GradoSuperior)
+  then
+    modify($cliente){
+    	getInfoAbstracta().setNivelEducativo(4);
+    }
+    pantalla( "Abstraccion: Nivel educativo "+ $cliente.getInfoAbstracta().getNivelEducativo() );
+end
+
+rule "Educación universitaria"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getEstudios() == Estudios.Universitario)
+  then
+    modify($cliente){
+    	getInfoAbstracta().setNivelEducativo(5);
+    }
+    pantalla( "Abstraccion: Nivel educativo "+ $cliente.getInfoAbstracta().getNivelEducativo() );
+end

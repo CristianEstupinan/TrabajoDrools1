@@ -7,7 +7,6 @@ import org.kie.api.runtime.KieSession;
 import model.Aficiones;
 import model.Cliente;
 import model.InfoAbstractaCliente;
-import model.InfoAbstractaCliente.RangoEdad;
 import model.InfoPersonal;
 import model.InfoPersonal.EstadoCivil;
 import model.InfoPersonal.Estudios;
