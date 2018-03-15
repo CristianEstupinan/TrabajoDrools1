@@ -1,0 +1,55 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+import function herramientas.Registro.pantalla;
+import model.*;
+import model.InfoAbstractaCliente.RangoEdad;
+
+
+// Reglas de abstracción para le rango de edad
+rule "Abstrae edad joven"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getEdad() < 30 )
+  then
+    modify($cliente){
+    	getInfoAbstracta().setRangoEdad(RangoEdad.Joven);
+    }
+    pantalla( "Abstraccion: "+ $cliente.getInfoAbstracta().getRangoEdad() );
+end
+
+rule "Abstrae edad adulto"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getEdad() >= 30 && getInfoPersonal().getEdad() <= 67)
+  then
+    modify($cliente){
+    	getInfoAbstracta().setRangoEdad(RangoEdad.Adulto);
+    }
+    pantalla( "Abstraccion: "+ $cliente.getInfoAbstracta().getRangoEdad() );
+end
+
+rule "Abstrae edad mayor"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getEdad() > 67 )
+  then
+    modify($cliente){
+    	getInfoAbstracta().setRangoEdad(RangoEdad.Mayor);
+    }
+    pantalla( "Abstraccion: "+ $cliente.getInfoAbstracta().getRangoEdad() );
+end
+
+
+// Reglas asbtraccion capacidad deportiva
+
+
+// Reglas abstracción riesgo familias
+
+
+
+
+
