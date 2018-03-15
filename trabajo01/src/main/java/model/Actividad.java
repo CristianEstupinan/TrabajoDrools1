@@ -9,14 +9,14 @@ public class Actividad {
 
     private final Set<String> idioma;
     private final Set<Interes> tipo;
-    private final int costeMax;
+    private final int coste;
     private final boolean necesidadDeportiva;
     private final Riesgo riesgo;
 
-    public Actividad(Set<String> idioma, Set<Interes> tipo, int costeMax, boolean necesidadDeportiva, Riesgo riesgo) {
+    public Actividad(Set<String> idioma, Set<Interes> tipo, int coste, boolean necesidadDeportiva, Riesgo riesgo) {
         this.idioma = idioma;
         this.tipo = tipo;
-        this.costeMax = costeMax;
+        this.coste = coste;
         this.necesidadDeportiva = necesidadDeportiva;
         this.riesgo = riesgo;
     }
@@ -29,8 +29,8 @@ public class Actividad {
         return tipo;
     }
 
-    public int getCosteMax() {
-        return costeMax;
+    public int getCoste() {
+        return coste;
     }
 
     public boolean isNecesidadDeportiva() {

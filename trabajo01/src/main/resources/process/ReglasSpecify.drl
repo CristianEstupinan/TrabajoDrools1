@@ -4,7 +4,9 @@ import com.sample.DroolsTest.Message;
 import function herramientas.Registro.pantalla;
 import model.*;
 import criterios.*;
-
+import criterios.CriteriosAplicables;
+import criterios.CriteriosAplicables.Capacidad;
+import model.InfoAbstractaCliente.RangoEdad;
 
 // Reglas de especificación de discapacidad
 rule "Regla especificacion 1"
@@ -12,9 +14,52 @@ rule "Regla especificacion 1"
   lock-on-active true
   when
   	$cliente: Cliente( getInfoPersonal().isDiscapacidad())
+  	$capacidadPago: CriteriosAplicables(getTipoCriterio() == Capacidad.Pago)
   then
-    modify($cliente){
-    	getInfoAbstracta().setRangoEdad(RangoEdad.Joven);
+    modify($capacidadPago){
+    	setActivo(CriteriosAplicables.NOAPLICABLE);
     }
-    pantalla( "Abstraccion: "+ $cliente.getInfoAbstracta().getRangoEdad() );
+    pantalla( "Especificacion: : " + $capacidadPago.getEstado());
+end
+
+// Reglas de especificación de idioma
+rule "Regla especificacion 2"
+  ruleflow-group "especifica"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoAbstracta().getNivelEducativo() >= 4)
+  	$capacidadIdioma: CriteriosAplicables(getTipoCriterio() == Capacidad.Idioma)
+  then
+    modify($capacidadIdioma){
+    	setActivo(CriteriosAplicables.NOAPLICABLE);
+    }
+    pantalla( "Especificacion: : " + $capacidadPago.getEstado());
+end
+
+// Reglas de especificación deportiva
+rule "Regla especificacion 3"
+  ruleflow-group "especifica"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoAbstracta().getRangoEdad() == RangoEdad.Joven)
+  	$capacidadDeportiva: CriteriosAplicables(getTipoCriterio() == Capacidad.Deportiva)
+  then
+    modify($capacidadDeportiva){
+    	setActivo(CriteriosAplicables.NOAPLICABLE);
+    }
+    pantalla( "Especificacion: : " + $capacidadDeportiva.getEstado());
+end
+
+// Reglas de especificación necesidad deportiva
+rule "Regla especificacion 4"
+  ruleflow-group "especifica"
+  lock-on-active true
+  when
+  	$actividad: Actividad(isNecesidadDeportiva())
+  	$capacidadDeportiva: CriteriosAplicables(getTipoCriterio() == Capacidad.Deportiva)
+  then
+    modify($capacidadDeportiva){
+    	setActivo(CriteriosAplicables.NOAPLICABLE);
+    }
+    pantalla( "Especificacion: : " + $capacidadDeportiva.getEstado());
 end
