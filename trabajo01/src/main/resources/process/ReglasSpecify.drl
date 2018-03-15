@@ -17,7 +17,7 @@ rule "Regla especificacion 1"
   	$capacidadPago: CriteriosAplicables(getTipoCriterio() == Capacidad.Pago)
   then
     modify($capacidadPago){
-    	setActivo(CriteriosAplicables.NOAPLICABLE);
+    	setEstado(CriteriosAplicables.NOAPLICABLE);
     }
     pantalla( "Especificacion: : " + $capacidadPago.getEstado());
 end
@@ -31,9 +31,9 @@ rule "Regla especificacion 2"
   	$capacidadIdioma: CriteriosAplicables(getTipoCriterio() == Capacidad.Idioma)
   then
     modify($capacidadIdioma){
-    	setActivo(CriteriosAplicables.NOAPLICABLE);
+    	setEstado(CriteriosAplicables.NOAPLICABLE);
     }
-    pantalla( "Especificacion: : " + $capacidadPago.getEstado());
+    pantalla( "Especificacion: : " + $capacidadIdioma.getEstado());
 end
 
 // Reglas de especificación deportiva
@@ -45,7 +45,7 @@ rule "Regla especificacion 3"
   	$capacidadDeportiva: CriteriosAplicables(getTipoCriterio() == Capacidad.Deportiva)
   then
     modify($capacidadDeportiva){
-    	setActivo(CriteriosAplicables.NOAPLICABLE);
+    	setEstado(CriteriosAplicables.NOAPLICABLE);
     }
     pantalla( "Especificacion: : " + $capacidadDeportiva.getEstado());
 end
@@ -59,7 +59,7 @@ rule "Regla especificacion 4"
   	$capacidadDeportiva: CriteriosAplicables(getTipoCriterio() == Capacidad.Deportiva)
   then
     modify($capacidadDeportiva){
-    	setActivo(CriteriosAplicables.NOAPLICABLE);
+    	setEstado(CriteriosAplicables.NOAPLICABLE);
     }
     pantalla( "Especificacion: : " + $capacidadDeportiva.getEstado());
 end

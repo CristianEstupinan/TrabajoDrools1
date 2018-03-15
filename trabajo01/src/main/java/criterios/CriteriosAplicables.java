@@ -21,7 +21,7 @@ public class CriteriosAplicables {
         this.tipoCriterio = tipoCriterio;
     }
 
-    public int getActivo() {
+    public int getEstado() {
         return activo;
     }
 
@@ -37,7 +37,7 @@ public class CriteriosAplicables {
         return nComunes;
     }
 
-	public void setActivo(int activo) {
+	public void setEstado(int activo) {
 		this.activo = activo;
 	}
 
