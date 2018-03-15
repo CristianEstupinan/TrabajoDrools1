@@ -1,0 +1,20 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+import function herramientas.Registro.pantalla;
+import model.*;
+import criterios.*;
+
+
+// Reglas de especificación de discapacidad
+rule "Regla especificacion 1"
+  ruleflow-group "especifica"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().isDiscapacidad())
+  then
+    modify($cliente){
+    	getInfoAbstracta().setRangoEdad(RangoEdad.Joven);
+    }
+    pantalla( "Abstraccion: "+ $cliente.getInfoAbstracta().getRangoEdad() );
+end
