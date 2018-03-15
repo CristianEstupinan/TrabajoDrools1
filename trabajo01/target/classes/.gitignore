@@ -1,7 +1,4 @@
-/META-INF/
 /com/
-/criterios/
-/herramientas/
-/logback-test.xml
-/model/
 /process/
+/model/
+/herramientas/

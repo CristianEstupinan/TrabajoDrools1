@@ -16,7 +16,7 @@
 
     <!-- nodes -->
     <scriptTask id="_2" name="Hello" >
-      <script>System.out.println("proceso: Hello World");</script>
+      <script>System.out.println("proceso: Hello World. Comienza la Inferencia");</script>
     </scriptTask>
     <startEvent id="_1"  isInterrupting="true">
     </startEvent>
@@ -32,7 +32,7 @@
       </ioSpecification>
     </businessRuleTask>
     <scriptTask id="_jbpm-unique-1" name="Bye" >
-      <script>System.out.println("proceso: Bye World");</script>
+      <script>System.out.println("proceso: Bye World. Finaliza la inferencia.");</script>
     </scriptTask>
     <businessRuleTask id="_jbpm-unique-2" name="verifica" g:ruleFlowGroup="verifica" >
       <ioSpecification>

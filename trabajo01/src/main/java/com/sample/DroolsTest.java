@@ -4,9 +4,14 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
-/**
- * This is a sample class to launch a rule.
- */
+import model.Aficiones;
+import model.Cliente;
+import model.InfoAbstractaCliente;
+import model.InfoAbstractaCliente.RangoEdad;
+import model.InfoPersonal;
+import model.InfoPersonal.EstadoCivil;
+import model.InfoPersonal.Estudios;
+
 public class DroolsTest {
 
     public static final void main(String[] args) {
@@ -16,18 +21,23 @@ public class DroolsTest {
     	    KieContainer kContainer = ks.getKieClasspathContainer();
         	KieSession kSession = kContainer.newKieSession("ksession-process");
 
-            // go !
-            Message message = new Message();
-            message.setMessage("Hello World");
-            message.setStatus(Message.HELLO);
-            kSession.insert(message);
-            // num personas, edad ppal, niños, nº dias
-            
-            // sólo una actividad cada vez 
-            //kSession.insert(loro);
-
+        	Cliente cl = new Cliente (
+        			new InfoPersonal(
+        					35,
+        					null,
+        					EstadoCivil.Soltero,
+        					Estudios.Basico,
+        					false,
+        					50,
+        					false),
+        			new Aficiones(),
+        			new InfoAbstractaCliente()
+        			);
+        	kSession.insert(cl);
+        	
             kSession.startProcess("com.sample.bpmn.hello");
-            kSession.fireAllRules();
+            //kSession.fireAllRules();
+            
         } catch (Throwable t) {
             t.printStackTrace();
         }

@@ -14,18 +14,16 @@ public class InfoAbstractaCliente {
     private int nivelEducativo = -1;
     private Riesgo riesgo;
 
-    public InfoAbstractaCliente(RangoEdad rangoEdad, int nivelEducativo, Riesgo riesgo) {
-        this.rangoEdad = rangoEdad;
-        this.nivelEducativo = nivelEducativo;
-        this.riesgo = riesgo;
+    public InfoAbstractaCliente() {
+        
     }
 
     public RangoEdad getRangoEdad() {
         return rangoEdad;
     }
 
-    public void setRangoEdad(RangoEdad rangoEdad) {
-        this.rangoEdad = rangoEdad;
+    public void setRangoEdad(RangoEdad rango) {
+        this.rangoEdad = rango;
     }
 
     public int getNivelEducativo() {
