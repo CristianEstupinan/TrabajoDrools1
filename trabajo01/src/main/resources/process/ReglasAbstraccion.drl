@@ -4,6 +4,7 @@ import com.sample.DroolsTest.Message;
 import function herramientas.Registro.pantalla;
 import model.*;
 import model.InfoAbstractaCliente.RangoEdad;
+import model.InfoAbstractaCliente.Riesgo;
 
 
 // Reglas de abstracción para le rango de edad
@@ -48,7 +49,17 @@ end
 
 
 // Reglas abstracción riesgo familias
-
+rule "familias sin hijos"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoPersonal().getNHijos() == 0 )
+  then
+    modify($cliente){
+    	getInfoAbstracta().setRiesgo(Riesgo.Bajo);
+    }
+    pantalla( "Abstraccion: "+ $cliente.getInfoAbstracta().getRiesgo() );
+end
 
 
 

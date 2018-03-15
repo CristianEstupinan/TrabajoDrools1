@@ -15,22 +15,26 @@ public class InfoPersonal {
     private final int edad;
     private final Set<String> idiomas;
     private final EstadoCivil estadoCivil;
+    private final int nHijos;
     private final Estudios estudios;
     private final boolean discapacidad;
     private final int costeMax;
-    private final boolean capacidadDeportiva;
 
-    public InfoPersonal(int edad, Set<String> idiomas, EstadoCivil estadoCivil, Estudios estudios, boolean discapacidad, int costeMax, boolean capacidadDeportiva) {
+    public InfoPersonal(int edad, Set<String> idiomas, EstadoCivil estadoCivil,int nHijos,  Estudios estudios, boolean discapacidad, int costeMax) {
         this.edad = edad;
         this.idiomas = idiomas;
         this.estadoCivil = estadoCivil;
         this.estudios = estudios;
         this.discapacidad = discapacidad;
         this.costeMax = costeMax;
-        this.capacidadDeportiva = capacidadDeportiva;
+        this.nHijos = nHijos;
     }
 
-    public int getEdad() {
+    public int getNHijos() {
+		return nHijos;
+	}
+
+	public int getEdad() {
         return edad;
     }
 
@@ -54,10 +58,6 @@ public class InfoPersonal {
         return costeMax;
     }
 
-    public boolean isCapacidadDeportiva() {
-        return capacidadDeportiva;
-    }
-
     @Override
     public String toString() {
         return "InfoPersonal{" +
@@ -67,7 +67,6 @@ public class InfoPersonal {
                 ", estudios=" + estudios +
                 ", discapacidad=" + discapacidad +
                 ", costeMax=" + costeMax +
-                ", capacidadDeportiva=" + capacidadDeportiva +
                 '}';
     }
 }
