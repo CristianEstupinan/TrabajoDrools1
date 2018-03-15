@@ -8,6 +8,8 @@ import model.InfoAbstractaCliente.Riesgo;
 import criterios.*;
 import criterios.CriteriosAplicables;
 import criterios.CriteriosAplicables.Capacidad;
+import function herramientas.OperacionesConjuntos.interseccion;
+import function herramientas.OperacionesConjuntos.tamanoConjunto;
 
 // Regla de validacion de capacidad de pago del cliente para realizar la actividad
 rule "Regla criterio 1"
@@ -24,13 +26,15 @@ rule "Regla criterio 1"
     pantalla( "Validacion: "+ $capacidadPago.isVerificado());
 end
 
-// Regla de validacion de capacidad de pago del cliente para realizar la actividad
+// Regla de validacion: Relajamos las condiciones de pago para aquellos clientes jóvenes o mayores.”
 rule "Regla criterio 2"
   ruleflow-group "verifica"
   lock-on-active true
   when
-  	$cliente: Cliente($costeMax: getInfoPersonal().getCosteMax());
-  	$actividad: Actividad($costeMax >= getCoste());
+  	Cliente( getInfoAbstracta().getRangoEdad() == RangoEdad.Joven ||
+  						getInfoAbstracta().getRangoEdad() == RangoEdad.Mayor);
+  	Actividad($costeActividad: getCoste())
+  	Cliente( getInfoPersonal().getCosteMax() >= $costeActividad*0.8);
   	$capacidadPago: CriteriosAplicables(getTipoCriterio() == Capacidad.Pago)
   then
     modify($capacidadPago){
@@ -38,3 +42,24 @@ rule "Regla criterio 2"
     }
     pantalla( "Validacion: "+ $capacidadPago.isVerificado());
 end
+
+//clone
+//retainAll
+
+// Regla de validacion: Relajamos las condiciones de pago para aquellos clientes jóvenes o mayores.”
+rule "Regla criterio 3"
+  ruleflow-group "verifica"
+  lock-on-active true
+  when
+  	Actividad( $idiomasActividad: getIdioma());
+	Cliente( $idiomasCliente: getInfoPersonal().getIdiomas());
+	eval(tamanoConjunto(interseccion($idiomasActividad,$idiomasCliente)) >= 1)
+  	$capacidadIdioma: CriteriosAplicables(getTipoCriterio() == Capacidad.Idioma)
+  then
+    modify($capacidadIdioma){
+    	setVerificado(true);
+    }
+    pantalla( "Validacion: "+ $capacidadIdioma.isVerificado());
+end
+
+
