@@ -13,7 +13,7 @@ public class InfoAbstractaCliente {
     private RangoEdad rangoEdad;
     private int nivelEducativo = -1;
     private Riesgo riesgo;
-    private boolean capacidadDeportiva;
+    private boolean capacidadDeportiva = true;
 
     public boolean isCapacidadDeportiva() {
 		return capacidadDeportiva;

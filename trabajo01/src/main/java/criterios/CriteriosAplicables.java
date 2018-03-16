@@ -2,27 +2,32 @@ package criterios;
 
 public class CriteriosAplicables {
 
-    public static int ACTIVO = 1;
-    public static int NOACTIVO = 0;
-    public static int NOAPLICABLE = -1;
+    public static final int ACTIVO = 1;
+    public static final int NOACTIVO = 0;
+    public static final int NOAPLICABLE = -1;
 
     public enum Capacidad {
         Deportiva, Idioma, Pago, Intereses
     }
 
-    private int activo;
-    private boolean verificado;
+    private int estado;
+    private boolean verificado = false;
     private final Capacidad tipoCriterio;
     private int nComunes = -1; // solo para tipo Intereses
 
     public CriteriosAplicables(Capacidad tipoCriterio) {
-        this.activo = NOACTIVO;
+        this.estado = NOACTIVO;
         this.verificado = false;
         this.tipoCriterio = tipoCriterio;
     }
 
-    public int getEstado() {
-        return activo;
+    public String getEstado() {
+        switch(estado) {
+	        case ACTIVO: return "activo";
+	        case NOACTIVO: return "no activo";
+	        case NOAPLICABLE: return "no aplicable";
+	        default: return "UNKNOWN";
+        }
     }
 
     public boolean isVerificado() {
@@ -38,14 +43,19 @@ public class CriteriosAplicables {
     }
 
 	public void setEstado(int activo) {
-		this.activo = activo;
+		this.estado = activo;
 	}
 
-	public void setVerificado(boolean verificado) {
-		this.verificado = verificado;
+	public void verificar() {
+		this.verificado = true;
+	}
+	
+	public void activar() {
+		this.estado = ACTIVO;
 	}
 	
 	public void setnComunes(int nComunes) {
         this.nComunes = nComunes;
     }
+	
 }

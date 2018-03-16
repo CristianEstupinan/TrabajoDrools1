@@ -1,6 +1,7 @@
 package com.sample;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 
 import org.kie.api.KieServices;
@@ -9,7 +10,7 @@ import org.kie.api.runtime.KieSession;
 
 import criterios.CriteriosAplicables;
 import criterios.CriteriosAplicables.Capacidad;
-import criterios.DecisionRealizarActividad;
+import criterios.PropuestaActividad;
 import model.Actividad;
 import model.Aficiones;
 import model.Aficiones.Interes;
@@ -36,14 +37,15 @@ public class DroolsTest {
         					new HashSet<String>(Arrays.asList("Ingles", "Español")),
         					EstadoCivil.Soltero,
         					1,
-        					Estudios.GradoSuperior,
+        					Estudios.GradoMedio,
         					false,
         					1000),
         			new Aficiones(Arrays.asList(
         					Interes.Cultural,
         					Interes.Paisajistico,
         					Interes.Social,
-        					Interes.Comercial)),
+        					Interes.Comercial,
+        					Interes.Formacion)),
         			new InfoAbstractaCliente()
         			);
         	kSession.insert(cl);
@@ -53,32 +55,46 @@ public class DroolsTest {
         			new HashSet<Interes>(Arrays.asList(Interes.Paisajistico, Interes.Social, Interes.Deportivo)),
         			500,
         			true,
-        			Riesgo.Alto);
+        			Riesgo.Alto,
+        			"Paracaidas");
         	
         	Actividad visita = new Actividad(
         			new HashSet<String>(Arrays.asList("Español")),
         			new HashSet<Interes>(Arrays.asList(Interes.Paisajistico, Interes.Cultural, Interes.Comercial)),
         			100,
         			false,
-        			Riesgo.Bajo);
+        			Riesgo.Bajo, 
+        			"Visita cultural a teror");
         	
-        	//kSession.insert(parachute);
+        	Actividad erasmus = new Actividad(
+        			new HashSet<String>(Arrays.asList("Aleman")),
+        			new HashSet<Interes>(Arrays.asList(Interes.Paisajistico, Interes.Cultural, Interes.Comercial, Interes.Formacion, Interes.Social)),
+        			1000,
+        			true,
+        			Riesgo.Medio, 
+        			"erasmus a Berlín");
+        	
+        	// Diversos ejemplos de funcionamiento
         	kSession.insert(visita);
+        	PropuestaActividad decision = new PropuestaActividad(visita, cl, new Date());
+        	//kSession.insert(parachute);
+        	//PropuestaActividad decision= new PropuestaActividad(parachute, cl, new Date());
+        	//kSession.insert(erasmus);
+        	//PropuestaActividad decision= new PropuestaActividad(erasmus, cl, new Date());
+        	kSession.insert(decision);
         	
         	kSession.insert(new CriteriosAplicables(Capacidad.Deportiva));
         	kSession.insert(new CriteriosAplicables(Capacidad.Idioma));
         	kSession.insert(new CriteriosAplicables(Capacidad.Intereses));
         	kSession.insert(new CriteriosAplicables(Capacidad.Pago));
         	
-        	DecisionRealizarActividad decision = new DecisionRealizarActividad();
-        	kSession.insert(decision);
             kSession.startProcess("com.sample.bpmn.hello");
             //kSession.fireAllRules();
             
-            if(decision.isEstado()) {
-            	System.out.println("Se ha decidido recomendar la actividad");
+            if(decision.isDecision()) {
+            	System.out.println("Se ha decidido recomendar la actividad " + decision.getActividad().getNombre());
             }else {
-            	System.out.println("Se ha decidido NO recomendar la actividad");
+            	System.out.println("Se ha decidido NO recomendar la actividad " + decision.getActividad().getNombre());
             }
         } catch (Throwable t) {
             t.printStackTrace();

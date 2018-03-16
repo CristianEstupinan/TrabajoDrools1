@@ -19,7 +19,7 @@ rule "Regla especificacion 1"
     modify($capacidadPago){
     	setEstado(CriteriosAplicables.NOAPLICABLE);
     }
-    pantalla( "Especificacion: : " + $capacidadPago.getEstado());
+    pantalla( "Especificacion 1: " + $capacidadPago.getEstado());
 end
 
 // Reglas de especificación de idioma
@@ -33,7 +33,7 @@ rule "Regla especificacion 2"
     modify($capacidadIdioma){
     	setEstado(CriteriosAplicables.NOAPLICABLE);
     }
-    pantalla( "Especificacion: : " + $capacidadIdioma.getEstado());
+    pantalla( "Especificacion 2: " + $capacidadIdioma.getEstado());
 end
 
 // Reglas de especificación deportiva
@@ -47,7 +47,7 @@ rule "Regla especificacion 3"
     modify($capacidadDeportiva){
     	setEstado(CriteriosAplicables.NOAPLICABLE);
     }
-    pantalla( "Especificacion: : " + $capacidadDeportiva.getEstado());
+    pantalla( "Especificacion 3: " + $capacidadDeportiva.getEstado());
 end
 
 // Reglas de especificación necesidad deportiva
@@ -55,11 +55,11 @@ rule "Regla especificacion 4"
   ruleflow-group "especifica"
   lock-on-active true
   when
-  	$actividad: Actividad(isNecesidadDeportiva())
+  	$actividad: Actividad(!isNecesidadDeportiva())
   	$capacidadDeportiva: CriteriosAplicables(getTipoCriterio() == Capacidad.Deportiva)
   then
     modify($capacidadDeportiva){
     	setEstado(CriteriosAplicables.NOAPLICABLE);
     }
-    pantalla( "Especificacion: : " + $capacidadDeportiva.getEstado());
+    pantalla( "Especificacion 4: " + $capacidadDeportiva.getEstado());
 end

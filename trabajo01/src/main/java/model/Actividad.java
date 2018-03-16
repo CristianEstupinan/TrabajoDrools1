@@ -12,13 +12,15 @@ public class Actividad {
     private final int coste;
     private final boolean necesidadDeportiva;
     private final Riesgo riesgo;
+    private final String nombre;
 
-    public Actividad(Set<String> idioma, Set<Interes> tipo, int coste, boolean necesidadDeportiva, Riesgo riesgo) {
+    public Actividad(Set<String> idioma, Set<Interes> tipo, int coste, boolean necesidadDeportiva, Riesgo riesgo, String nombre) {
         this.idioma = idioma;
         this.tipo = tipo;
         this.coste = coste;
         this.necesidadDeportiva = necesidadDeportiva;
         this.riesgo = riesgo;
+        this.nombre = nombre;
     }
 
     public Set<String> getIdioma() {
@@ -40,4 +42,9 @@ public class Actividad {
     public Riesgo getRiesgo() {
         return riesgo;
     }
+
+	public String getNombre() {
+		return nombre;
+	}
+
 }

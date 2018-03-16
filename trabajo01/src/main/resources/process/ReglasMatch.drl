@@ -11,19 +11,19 @@ rule "Regla de match completa"
   lock-on-active true
   when
     CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Pago) && 
-    	(getEstado() == CriteriosAplicables.NOAPLICABLE || isVerificado()));
+    	(getEstado() == "no aplicable" || isVerificado()));
     CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Idioma) && 
-    	(getEstado() == CriteriosAplicables.NOAPLICABLE || isVerificado()));
+    	(getEstado() == "no aplicable" || isVerificado()));
     CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Deportiva) && 
-    	(getEstado() == CriteriosAplicables.NOAPLICABLE || isVerificado()));
+    	(getEstado() == "no aplicable" || isVerificado()));
     CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Intereses) && 
     	getnComunes() > 2);
-  	$decision: DecisionRealizarActividad(!isEstado());
+  	$decision: PropuestaActividad();
   then
     modify($decision){
-    	setEstado(true);
+    	aprobar();
     }
-    pantalla( "Match: "+ $decision.isEstado() );
+    pantalla( "Match completo: "+ $decision.isDecision() );
 end
 
 rule "Regla de match relajada"
@@ -31,13 +31,13 @@ rule "Regla de match relajada"
   lock-on-active true
   when
     CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Pago) && 
-    	(getEstado() == CriteriosAplicables.NOAPLICABLE || isVerificado()));
+    	(getEstado() == "no aplicable" || isVerificado()));
     CriteriosAplicables( (getTipoCriterio() ==  Capacidad.Intereses) && 
     	getnComunes() >= 5);
-  	$decision: DecisionRealizarActividad(!isEstado());
+  	$decision: PropuestaActividad();
   then
     modify($decision){
-    	setEstado(true);
+    	aprobar();
     }
-    pantalla( "Match: "+ $decision.isEstado() );
+    pantalla( "Match relajado: "+ $decision.isDecision() );
 end

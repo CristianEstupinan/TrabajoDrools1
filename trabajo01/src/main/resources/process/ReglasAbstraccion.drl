@@ -58,6 +58,19 @@ rule "Capacidad Deportiva discapacidtados"
     pantalla( "Abstraccion: Capacidad deportiva "+ $cliente.getInfoAbstracta().isCapacidadDeportiva() );
 end
 
+// Reglas asbtraccion capacidad deportiva riesgo alto
+rule "Capacidad Deportiva riesgo alto"
+  ruleflow-group "abstrae"
+  lock-on-active true
+  when
+  	$cliente: Cliente( getInfoAbstracta().Riesgo == Riesgo.Alto )
+  then
+    modify($cliente){
+    	getInfoAbstracta().setCapacidadDeportiva(false);
+    }
+    pantalla( "Abstraccion: Capacidad deportiva riesgo alto "+ $cliente.getInfoAbstracta().isCapacidadDeportiva() );
+end
+
 // Reglas abstracción riesgo familias
 rule "familias sin hijos"
   ruleflow-group "abstrae"

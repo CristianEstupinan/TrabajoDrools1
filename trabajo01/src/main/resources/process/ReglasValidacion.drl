@@ -20,12 +20,11 @@ rule "Regla criterio 1"
   when
   	$cliente: Cliente($costeMax: getInfoPersonal().getCosteMax());
   	$actividad: Actividad($costeMax >= getCoste());
-  	$capacidadPago: CriteriosAplicables(getTipoCriterio() == Capacidad.Pago)
+  	$capacidadPago: CriteriosAplicables(getTipoCriterio() == Capacidad.Pago, !getEstado().equals("no aplicable"))
   then
-    modify($capacidadPago){
-    	setVerificado(true);
-    }
-    pantalla( "Validacion: "+ $capacidadPago.isVerificado());
+    modify($capacidadPago){verificar();}
+    modify($capacidadPago){activar();}
+    pantalla( "Validacion Pago: "+ $capacidadPago.isVerificado());
 end
 
 // Regla de validacion: Relajamos las condiciones de pago para aquellos clientes jóvenes o mayores.”
@@ -37,12 +36,11 @@ rule "Regla criterio 2"
   						getInfoAbstracta().getRangoEdad() == RangoEdad.Mayor);
   	Actividad($costeActividad: getCoste())
   	Cliente( getInfoPersonal().getCosteMax() >= $costeActividad*0.8);
-  	$capacidadPago: CriteriosAplicables(getTipoCriterio() == Capacidad.Pago)
+  	$capacidadPago: CriteriosAplicables(getTipoCriterio() == Capacidad.Pago, !getEstado().equals("no aplicable"))
   then
-    modify($capacidadPago){
-    	setVerificado(true);
-    }
-    pantalla( "Validacion: "+ $capacidadPago.isVerificado());
+    modify($capacidadPago){verificar();}
+    modify($capacidadPago){activar();}
+    pantalla( "Validacion Pago relajado: "+ $capacidadPago.isVerificado());
 end
 
 // Regla de validacion: Comprobamos que el cliente disponga al menos de un idioma utilizado en la actividad a realizar.”
@@ -53,12 +51,11 @@ rule "Regla criterio 3"
   	Actividad( $idiomasActividad: getIdioma());
 	Cliente( $idiomasCliente: getInfoPersonal().getIdiomas());
 	eval(tamanoConjunto(interseccion($idiomasActividad,$idiomasCliente)) >= 1)
-  	$capacidadIdioma: CriteriosAplicables(getTipoCriterio() == Capacidad.Idioma)
+  	$capacidadIdioma: CriteriosAplicables(getTipoCriterio() == Capacidad.Idioma, !getEstado().equals("no aplicable"))
   then
-    modify($capacidadIdioma){
-    	setVerificado(true);
-    }
-    pantalla( "Validacion: "+ $capacidadIdioma.isVerificado());
+    modify($capacidadIdioma){verificar();}
+    modify($capacidadIdioma){activar();}
+    pantalla( "Validacion idiomas: "+ $capacidadIdioma.isVerificado());
 end
 
 // Regla de validacion: Comprobamos que el cliente disponga de capacidad deportiva para hacer la actividad.”
@@ -67,27 +64,11 @@ rule "Regla criterio 4"
   lock-on-active true
   when
 	Cliente( getInfoAbstracta().isCapacidadDeportiva());
-	$capacidadDeportiva: CriteriosAplicables(getTipoCriterio() == Capacidad.Deportiva)
+	$capacidadDeportiva: CriteriosAplicables(getTipoCriterio() == Capacidad.Deportiva, !getEstado().equals("no aplicable"))
   then
-    modify($capacidadDeportiva){
-    	setVerificado(true);
-    }
-    pantalla( "Validacion: "+ $capacidadDeportiva.isVerificado());
-end
-
-// Regla de validacion: Relajamos las condiciones de capacidad deportiva para aquellos adultos con un riesgo bajo.”
-rule "Regla criterio 5"
-  ruleflow-group "verifica"
-  lock-on-active true
-  when
-	Cliente( getInfoAbstracta().getRangoEdad() == RangoEdad.Adulto);
-	Cliente( getInfoAbstracta().getRiesgo() == Riesgo.Bajo);
-	$capacidadDeportiva: CriteriosAplicables(getTipoCriterio() == Capacidad.Deportiva)
-  then
-    modify($capacidadDeportiva){
-    	setVerificado(true);
-    }
-    pantalla( "Validacion: "+ $capacidadDeportiva.isVerificado());
+    modify($capacidadDeportiva){verificar();}
+    modify($capacidadDeportiva){activar();}
+    pantalla( "Validacion Deporte: "+ $capacidadDeportiva.isVerificado());
 end
 
 // Regla de validacion: Obtiene el número de intereses en común entre el cliente y la actividad a realizar.”
@@ -95,15 +76,16 @@ rule "Regla criterio 6"
   ruleflow-group "verifica"
   lock-on-active true
   when
-  	Aficiones($intereses: getIntereses());
+  	Cliente($intereses: getAficiones().getIntereses());
   	Actividad($tipoActividad: getTipo());
 	eval(tamanoConjuntoInteres($intereses) >= 1);
 	eval(tamanoConjuntoInteres($tipoActividad) >= 1);
-	$interesesComun: CriteriosAplicables(getTipoCriterio() == Capacidad.Intereses)
+	$interesesComun: CriteriosAplicables(getTipoCriterio() == Capacidad.Intereses, !getEstado().equals("no aplicable"))
   then
     modify($interesesComun){setnComunes(tamanoConjuntoInteres(interseccionIntereses($intereses,$tipoActividad)));}
-    modify($interesesComun) {setVerificado(true);}
-    pantalla( "Validacion: "+ $interesesComun.isVerificado() + " intereses comun: " + $interesesComun.getnComunes());
+    modify($interesesComun) {verificar();}
+    modify($interesesComun){activar();}
+    pantalla( "Validacion Intereses común: "+ $interesesComun.isVerificado() + " intereses comun: " + $interesesComun.getnComunes());
 end
 
 
